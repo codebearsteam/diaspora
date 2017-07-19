@@ -38,13 +38,11 @@ module NotificationMailers
         host: "#{AppConfig.pod_uri.host}",
         to:   name_and_address(@recipient.name, @recipient.email)
       }
-
-      if @sender.present?
-        if @sender.profile.full_name.empty?
-          headers[:from] = "\"Diaspora*\" <#{AppConfig.mail.sender_address}>"
-        else
-          headers[:from] = "\"Diaspora* (#{@sender.name})\" <#{AppConfig.mail.sender_address}>"
-        end
+      return headers if @sender.blank?
+      headers[:from] = if @sender.profile.full_name.empty?
+        "\"Diaspora* (#{@sender.username})\" <#{AppConfig.mail.sender_address}>"
+      else
+        "\"Diaspora* (#{@sender.name})\" <#{AppConfig.mail.sender_address}>"
       end
       headers
     end

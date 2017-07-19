@@ -479,7 +479,7 @@ describe Notifier, type: :mailer do
     end
 
     it "FROM: header should be the default sender address" do
-      expect(@confirm_email["From"].to_s).to eq("#{AppConfig.mail.sender_address}")
+      expect(@confirm_email["From"].to_s).to eq(AppConfig.mail.sender_address.to_s)
     end
 
     it "has the unconfirmed email in the subject" do
@@ -507,7 +507,7 @@ describe Notifier, type: :mailer do
     end
 
     it "FROM: header should be the default sender address" do
-      expect(email["From"].to_s).to eq("#{AppConfig.mail.sender_address}")
+      expect(email["From"].to_s).to eq(AppConfig.mail.sender_address.to_s)
     end
 
     it "has the correct subject" do
@@ -544,11 +544,10 @@ describe Notifier, type: :mailer do
       }.to_not raise_error
     end
 
-    it "FROM: header should be 'Diaspora*' when there is no first and last name" do
-      bob.person.profile.update_attributes(:first_name => "", :last_name => "")
+    it "FROM: header should be 'Diaspora* (username)' when there is no first and last name" do
+      bob.person.profile.update_attributes(first_name: "", last_name: "")
       mail = Notifier.send_notification("started_sharing", alice.id, bob.person.id)
-      expect(mail["From"].to_s).to eq("Diaspora* <#{AppConfig.mail.sender_address}>")
+      expect(mail["From"].to_s).to eq("\"Diaspora* (#{bob.person.username})\" <#{AppConfig.mail.sender_address}>")
     end
-
   end
 end
