@@ -39,11 +39,9 @@ module NotificationMailers
         to:   name_and_address(@recipient.name, @recipient.email)
       }
       return headers if @sender.blank?
-      headers[:from] = if @sender.profile.full_name.empty?
-        "\"Diaspora* (#{@sender.username})\" <#{AppConfig.mail.sender_address}>"
-      else
-        "\"Diaspora* (#{@sender.name})\" <#{AppConfig.mail.sender_address}>"
-      end
+      sender_in_header = @sender.profile.full_name.empty? ? @sender.username : @sender.name
+      headers[:from] = "\"Diaspora* (#{sender_in_header})\" <#{AppConfig.mail.sender_address}>"
+
       headers
     end
 
