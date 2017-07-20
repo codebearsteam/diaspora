@@ -43,7 +43,7 @@ describe Report, type: :mailer do
 
     it "FROM: header should be the default sender address" do
       ReportMailer.new_report(@post_report.id).each(&:deliver_now)
-      expect(ReportMailer.default[:from].to_s).to eq(AppConfig.mail.sender_address.to_s)
+      expect(ReportMailer.default[:from].to_s).to eq(AppConfig.mail.sender_address)
     end
 
     it "should send mail in recipent's prefered language" do
