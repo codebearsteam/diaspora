@@ -1,5 +1,7 @@
 describe Notifier, type: :mailer do
   let(:person) { FactoryGirl.create(:person) }
+  let(:pod_name) { AppConfig.settings.pod_name }
+
 
   before do
     Notifier.deliveries = []
@@ -246,7 +248,6 @@ describe Notifier, type: :mailer do
     end
 
     it "FROM: contains the sender's name" do
-      pod_name = AppConfig.settings.pod_name
       expect(@mail["From"].to_s).to eq("\"#{pod_name} (#{@cnv.author.name})\" <#{AppConfig.mail.sender_address}>")
     end
 
@@ -291,7 +292,6 @@ describe Notifier, type: :mailer do
       end
 
       it "FROM: contains the sender's name" do
-        pod_name = AppConfig.settings.pod_name
         expect(comment_mail["From"].to_s).to eq("\"#{pod_name} (#{eve.name})\" <#{AppConfig.mail.sender_address}>")
       end
 
@@ -333,7 +333,6 @@ describe Notifier, type: :mailer do
       end
 
       it "FROM: has the name of person commenting as the sender" do
-        pod_name = AppConfig.settings.pod_name
         expect(comment_mail["From"].to_s).to eq("\"#{pod_name} (#{eve.name})\" <#{AppConfig.mail.sender_address}>")
       end
 
@@ -389,7 +388,6 @@ describe Notifier, type: :mailer do
         end
 
         it "FROM: contains the sender's name" do
-          pod_name = AppConfig.settings.pod_name
           expect(mail["From"].to_s).to eq("\"#{pod_name} (#{bob.name})\" <#{AppConfig.mail.sender_address}>")
         end
 
@@ -415,7 +413,6 @@ describe Notifier, type: :mailer do
         end
 
         it "FROM: contains the sender's name" do
-          pod_name = AppConfig.settings.pod_name
           expect(mail["From"].to_s).to eq("\"#{pod_name} (#{bob.name})\" <#{AppConfig.mail.sender_address}>")
         end
 
@@ -447,7 +444,6 @@ describe Notifier, type: :mailer do
       end
 
       it "FROM: contains the sender's name" do
-        pod_name = AppConfig.settings.pod_name
         expect(mail["From"].to_s).to eq("\"#{pod_name} (#{bob.name})\" <#{AppConfig.mail.sender_address}>")
       end
 
@@ -553,7 +549,6 @@ describe Notifier, type: :mailer do
     it "FROM: header should be 'pod_name (username)' when there is no first and last name" do
       bob.person.profile.update_attributes(first_name: "", last_name: "")
       mail = Notifier.send_notification("started_sharing", alice.id, bob.person.id)
-      pod_name = AppConfig.settings.pod_name
       expect(mail["From"].to_s).to eq("\"#{pod_name} (#{bob.person.username})\" <#{AppConfig.mail.sender_address}>")
     end
   end
