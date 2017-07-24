@@ -34,7 +34,7 @@ module NotificationMailers
 
     def default_headers
       headers = {
-        from: AppConfig.mail.sender_address.get,
+        from: "\"#{AppConfig.settings.pod_name}\" <#{AppConfig.mail.sender_address}>",
         host: "#{AppConfig.pod_uri.host}",
         to:   name_and_address(@recipient.name, @recipient.email)
       }

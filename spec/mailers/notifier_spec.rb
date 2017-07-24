@@ -480,8 +480,8 @@ describe Notifier, type: :mailer do
       expect(@confirm_email.to).to eq([bob.unconfirmed_email])
     end
 
-    it "FROM: header should be the default sender address" do
-      expect(@confirm_email["From"].to_s).to eq(AppConfig.mail.sender_address)
+    it "FROM: header should be the pod name with default sender address" do
+      expect(@confirm_email["From"].to_s).to eq("#{pod_name} <#{AppConfig.mail.sender_address}>")
     end
 
     it "has the unconfirmed email in the subject" do
@@ -508,8 +508,8 @@ describe Notifier, type: :mailer do
       expect(email.to).to eq([alice.email])
     end
 
-    it "FROM: header should be the default sender address" do
-      expect(email["From"].to_s).to eq(AppConfig.mail.sender_address)
+    it "FROM: header should be the pod name + default sender address" do
+      expect(email["From"].to_s).to eq("#{pod_name} <#{AppConfig.mail.sender_address}>")
     end
 
     it "has the correct subject" do
